@@ -13,20 +13,28 @@ public class ModuleService {
     private final AtomicLong compteurId = new AtomicLong(1);
 
     public Collection<Module> tous() { return donnees.values(); }
-
     public Module trouver(Long id) { return donnees.get(id); }
 
-    public Module creer(String nom, Long departementId) {
-        Module m = new Module(compteurId.getAndIncrement(), nom, departementId);
+    public Module creer(String nom) {
+        Module m = new Module(compteurId.getAndIncrement(), nom);
         donnees.put(m.getId(), m);
         return m;
     }
 
-    public Module mettreAJour(Long id, String nom, Long departementId) {
+    public Module mettreAJour(Long id, String nom) {
         if (!donnees.containsKey(id)) return null;
-        Module m = new Module(id, nom, departementId);
+        Module m = new Module(id, nom);
         donnees.put(id, m);
         return m;
+    }
+
+    public Module modifierPartiellement(Long id, String nom) {
+        Module existant = donnees.get(id);
+        if (existant == null) return null;
+        if (nom != null && !nom.isBlank()) {
+            existant.setNom(nom);
+        }
+        return existant;
     }
 
     public boolean supprimer(Long id) { return donnees.remove(id) != null; }

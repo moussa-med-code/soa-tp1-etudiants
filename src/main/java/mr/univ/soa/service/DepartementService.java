@@ -13,7 +13,6 @@ public class DepartementService {
     private final AtomicLong compteurId = new AtomicLong(1);
 
     public Collection<Departement> tous() { return donnees.values(); }
-
     public Departement trouver(Long id) { return donnees.get(id); }
 
     public Departement creer(String nom) {
@@ -27,6 +26,15 @@ public class DepartementService {
         Departement d = new Departement(id, nom);
         donnees.put(id, d);
         return d;
+    }
+
+    public Departement modifierPartiellement(Long id, String nom) {
+        Departement existant = donnees.get(id);
+        if (existant == null) return null;
+        if (nom != null && !nom.isBlank()) {
+            existant.setNom(nom);
+        }
+        return existant;
     }
 
     public boolean supprimer(Long id) { return donnees.remove(id) != null; }
